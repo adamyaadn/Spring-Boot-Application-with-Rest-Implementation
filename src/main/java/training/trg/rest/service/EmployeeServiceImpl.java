@@ -9,6 +9,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import training.trg.rest.data.Employee;
+import training.trg.rest.exceptions.DuplicateDataException;
+import training.trg.rest.exceptions.NonExistentDataAccess;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,13 +25,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeesByIdMap.put(44,new Employee(44,"Lily",12342,LocalDate.of(2003,5,1)));
 	}
 	
-	public Employee createData(Employee emp) {
+	public void createData(Employee emp) {
+		if(employeesByIdMap.containsKey(emp.getEmpId())) {
+			throw new DuplicateDataException();
+		}
 		employeesByIdMap.put(emp.getEmpId(), emp);
-		return employeesByIdMap.get(emp.getEmpId());
 	}
 
 	@Override
 	public Employee updateData(Employee emp) {
+		if(!employeesByIdMap.containsKey(emp.getEmpId())) {
+			throw new NonExistentDataAccess();
+		}
 		employeesByIdMap.put(emp.getEmpId(), emp);
 		return employeesByIdMap.get(emp.getEmpId());
 	}
@@ -50,6 +57,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public void deleteData(int empId) {
+		if(!employeesByIdMap.containsKey(empId)) {
+			throw new NonExistentDataAccess();
+		}
 		employeesByIdMap.remove(empId);
 	}
 

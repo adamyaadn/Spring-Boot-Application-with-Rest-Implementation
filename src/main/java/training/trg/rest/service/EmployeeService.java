@@ -5,7 +5,7 @@ import java.util.List;
 import training.trg.rest.data.Employee;
 
 public interface EmployeeService {
-	Employee createData(Employee emp);
+	void createData(Employee emp);
 	Employee updateData(Employee emp);
 	Employee getData(int empId);
 	List<Employee> getAllData();
