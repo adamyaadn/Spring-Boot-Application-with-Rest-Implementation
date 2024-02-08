@@ -25,11 +25,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employeesByIdMap.put(44,new Employee(44,"Lily",12342,LocalDate.of(2003,5,1)));
 	}
 	
-	public void createData(Employee emp) {
+	public Employee createData(Employee emp) {
 		if(employeesByIdMap.containsKey(emp.getEmpId())) {
 			throw new DuplicateDataException();
 		}
 		employeesByIdMap.put(emp.getEmpId(), emp);
+		return employeesByIdMap.get(emp.getEmpId());
 	}
 
 	@Override
